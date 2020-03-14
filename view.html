@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>云剪切板</title>
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+    <script src="https://cdn.bootcss.com/layer/3.0.3/mobile/layer.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+</head>
+
+<body>
+    <h1 class="text-center">云剪切板 <small>云记录</small></h1>
+    <p class="text-right" style="margin-right:10px;"><input class="btn btn-danger" style="width:35%;" type="button" value="新增" /></p>
+    <div style="margin:10px;display:none;" id="new_add">
+        <div class="form-group">
+            <textarea class="form-control" style="resize: none;" rows="8" id="text"></textarea>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-success" style="width:100%;" type="button" value="提交" />
+        </div>
+    </div>
+    <!-- PHP生成代码开始 -->
+    {$data}
+    <!-- PHP生成代码结束 -->
+    <script type="text/javascript">
+        var clipboard = new ClipboardJS(".btn");
+        clipboard.on('success', function (e) {
+            console.info('Action:', e.action);//类型
+            console.info('Text:', e.text);//内容
+            console.info('Trigger:', e.trigger);//引用代码
+            e.clearSelection();//清除全选
+        });
+
+        function Del_Button_Click(id) {
+            $.get("index.php", { type: "2", id: id }, function (data, status) {
+                $("#b" + id).fadeOut();
+                layer.open({ content: "成功删除：" + data + "条数据。", skin: "msg", time: 2 });
+            });
+        }
+
+        function Copy_Button_Click(id) {
+            layer.open({ content: "复制成功！", skin: "msg", time: 2 });
+        }
+
+        $.fn.tweetify = function() {
+            this.each(function() {
+            $(this).html(
+                $(this).html()
+                    .replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi,'<a href="$1" target="_blank">$1</a>')
+                    // .replace(/(^|\s)#(\w+)/g,'$1<a href="http://search.twitter.com/search?q=%23$2">#$2</a>')
+                    // .replace(/(^|\s)@(\w+)/g,'$1<a href="http://twitter.com/$2">@$2</a>')
+                );
+            });
+            return $(this);
+        }
+
+        $(document).ready(function () {
+            //$("li").tweetify();//分析文本里url或邮件地址为真实链接的方法
+
+            $("textarea").focus(function () {
+                $("textarea").css("background-color", "#FFFFCC");
+            });
+
+            $("textarea").blur(function () {
+                $("textarea").css("background-color", "");
+            });
+
+            $(".btn-danger").click(function (e) {
+                if ($("#new_add").css("display") == "none") {
+                    $("#new_add").css("display", "");
+                    $(".btn-danger").val("隐藏");
+                    //获取焦点
+                    $("textarea")[0].focus();
+                } else {
+                    $("#new_add").css("display", "none");
+                    $(".btn-danger").val("新增");
+                    //失去焦点
+                    $("textarea")[0].blur();
+                }
+            });
+
+            $(".btn-success").click(function (e) {
+                var text = $("#text").val();
+                if (!text) {
+                    //layer信息框
+                    layer.open({
+                        content: '内容不可为空！'
+                        , btn: '确定'
+                    });
+                } else {
+                    $.post("index.php", { type: "1", text: text },
+                        function (data, textStatus, jqXHR) {
+                            layer.open({ content: "新增数据" + data + "！", skin: "msg", time: 2 });
+                            window.location.reload();
+                            // $("#new_add").css("display", "none");
+                            // $(".btn-danger").val("新增");
+                        }
+                    );
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
