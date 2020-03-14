@@ -1,6 +1,6 @@
 ## 为什么想要开发这个小东西？
 
 1. 之前用了一款叫快贴的软件，由于软件有许多Bug，我向作者提交Bug他竟然开始进入循环装X模式。。。。。其实很简单的一个东西而已，Web方面就这点原理。
-2. Windows桌面程序到时候会基于Win32Api来处理复制消息，<font color="#FAEBD7">到时候也会上传到GitHub。</font>
-3. iOS跟Android对于这样的需求的App完全可用例如：APiCloud，Dcloud来实现封装，一套H5代码通吃2个平台。
+2. Windows桌面程序到时候会基于Win32Api来处理复制消息，到时候也会上传到GitHub。
+3. iOS跟Android对于这样的需求的App完全可用例如：APiCloud，Dcloud等等来实现封装，一套H5代码通吃多个平台。
 4. 做免费软件原本是件好事，莫装13，你在那装13的时候我在笑。
