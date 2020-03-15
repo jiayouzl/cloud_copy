@@ -7,10 +7,10 @@ date_default_timezone_set("Asia/Shanghai"); //设置时区
  * https://medoo.lvtao.net/1.2/doc.php
  */
 require_once './Medoo.php';
-use Medoo\Medoo;//命名空间
+use Medoo\Medoo;
 
 /**
- * 接口
+ * 接口说明
  * 新增:http://192.168.5.100/Kt_Web/index.php?type=1&text=test!
  * 清空:http://192.168.5.100/Kt_Web/index.php?type=2
  * 显示:http://192.168.5.100/Kt_Web/index.php
@@ -87,7 +87,7 @@ class KuaiTie
         }
         $result = $this->obj->insert('data', [
             'date' => date('Y-m-d H:i:s'),
-            'text' => $var,
+            'text' => $var
         ]);
         return $result;
     }
