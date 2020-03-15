@@ -7,9 +7,14 @@ date_default_timezone_set("Asia/Shanghai"); //设置时区
  * https://medoo.lvtao.net/1.2/doc.php
  */
 require_once './Medoo.php';
-use Medoo\Medoo;
+use Medoo\Medoo;//命名空间
 
-//命名空间
+/**
+ * 接口
+ * 新增:http://192.168.5.100/Kt_Web/index.php?type=1&text=test!
+ * 清空:http://192.168.5.100/Kt_Web/index.php?type=2
+ * 显示:http://192.168.5.100/Kt_Web/index.php
+ */
 
 $KuaiTie = new KuaiTie();
 $type    = @$_REQUEST['type'];
@@ -17,7 +22,6 @@ $text    = @$_REQUEST['text'];
 $id      = @$_REQUEST['id'];
 
 if ($type == 1) {
-    //http://192.168.5.100/Kt_Web/index.php?type=1&text=test!
     $result = $KuaiTie->Set($text);
     if ($result == 'repeat') {
         echo '重复';
@@ -25,10 +29,8 @@ if ($type == 1) {
         echo $result ? '成功' : '失败';
     }
 } elseif ($type == 2) {
-    //http://192.168.5.100/Kt_Web/index.php?type=2
     echo $KuaiTie->Clear($id);
 } else {
-    //http://192.168.5.100/Kt_Web/index.php
     $html = file_get_contents('./view.html');
     $var  = $KuaiTie->View();
     if (count($var) === 0) {
