@@ -1,13 +1,15 @@
 <?php
 //error_reporting(0);//抑制所有错误信息
-header('Content-Type:text/html; charset=utf-8');//设置编码
-date_default_timezone_set("Asia/Shanghai");//设置时区
+header('Content-Type:text/html; charset=utf-8'); //设置编码
+date_default_timezone_set("Asia/Shanghai"); //设置时区
 /**
  * Medoo类的说明文档
  * https://medoo.lvtao.net/1.2/doc.php
  */
 require_once './Medoo.php';
-use Medoo\Medoo;//命名空间
+use Medoo\Medoo;
+
+//命名空间
 
 $KuaiTie = new KuaiTie();
 $type    = @$_REQUEST['type'];
@@ -15,8 +17,13 @@ $text    = @$_REQUEST['text'];
 $id      = @$_REQUEST['id'];
 
 if ($type == 1) {
-    //http://192.168.5.100/Kt_Web/index.php?type=1&text=a啊1!
-    echo $KuaiTie->Set($text) ? '成功' : '失败';
+    //http://192.168.5.100/Kt_Web/index.php?type=1&text=test!
+    $result = $KuaiTie->Set($text);
+    if ($result == 'repeat') {
+        echo '重复';
+    } else {
+        echo $result ? '成功' : '失败';
+    }
 } elseif ($type == 2) {
     //http://192.168.5.100/Kt_Web/index.php?type=2
     echo $KuaiTie->Clear($id);
@@ -72,6 +79,10 @@ class KuaiTie
 
     public function Set($var = null)
     {
+        $has = $this->obj->has('data', ['text' => $var]);
+        if ($has === true) {
+            return 'repeat';
+        }
         $result = $this->obj->insert('data', [
             'date' => date('Y-m-d H:i:s'),
             'text' => $var,
